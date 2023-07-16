@@ -7,7 +7,7 @@ import "fmt";
 import "os";
 
 func GetFromEnv(key string) string {
-	err := godotenv.Load("../config.env");
+	err := godotenv.Load("config.env");
 	if err != nil {
 		fmt.Println("An error happened while loading env file!");
 	}
@@ -18,6 +18,7 @@ func CreateToken(user string, password string) (string, error) {
 	jwt_secret := GetFromEnv("ENV_SECRET");
 	token_raw := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user": user,
+		"password": password,
 		"authorized": true,
 	});
 	token, err := token_raw.SignedString([]byte(jwt_secret));
