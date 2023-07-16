@@ -7,7 +7,7 @@ import "fmt";
 import "os";
 
 func GetFromEnv(key string) string {
-	err := godotenv.Load("config.env");
+	err := godotenv.Load(".env");
 	if err != nil {
 		fmt.Println("An error happened while loading env file!");
 	}
@@ -15,7 +15,7 @@ func GetFromEnv(key string) string {
 }
 
 func CreateToken(user string, password string) (string, error) {
-	jwt_secret := GetFromEnv("ENV_SECRET");
+	jwt_secret := GetFromEnv("JWT_SECRET");
 	token_raw := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user": user,
 		"password": password,
@@ -33,7 +33,7 @@ func Hash(pass string) string {
 }
 
 func GetUserFromToken(tokenString string) (jwt.MapClaims, error) {
-	jwt_secret := GetFromEnv("ENV_SECRET");
+	jwt_secret := GetFromEnv("JWT_SECRET");
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Invalid signing method!");
