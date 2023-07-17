@@ -5,6 +5,7 @@ import "github.com/golang-jwt/jwt";
 import "golang.org/x/crypto/bcrypt";
 import "fmt";
 import "os";
+import "teletvbis/panelactyl/backend/database";
 
 func GetFromEnv(key string) string {
 	err := godotenv.Load(".env");
@@ -14,11 +15,15 @@ func GetFromEnv(key string) string {
 	return os.Getenv(key);
 }
 
-func CreateToken(user string, password string) (string, error) {
+func CreateToken(inputUser string) (string, error) {
+	err, user := database.FindUser(inputUser);
+	if err != nil {
+		return "", err;
+	}
 	jwt_secret := GetFromEnv("JWT_SECRET");
 	token_raw := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user": user,
-		"password": password,
+		"user": user.Name,
+		"password": user.Password,
 		"authorized": true,
 	});
 	token, err := token_raw.SignedString([]byte(jwt_secret));
@@ -28,8 +33,33 @@ func CreateToken(user string, password string) (string, error) {
 	return token, nil;
 }
 
+func Login(user string, inputPassword string) (error, string) {
+	err := Compare(inputPassword, user);
+	if err != nil {
+		return err, "";
+	}
+	token, err := CreateToken(user);
+	if err != nil {
+		return err, ""
+	}
+	return nil, token;
+}
+
 func Hash(pass string) string {
 	hashed, _ := bcrypt.GenerateFromPassword([]byte(pass), 8); return string(hashed);
+}
+
+func Compare(inputPassword string, inputUser string) error {
+	err, user := database.FindUser(inputUser);
+	if err != nil {
+		return err;
+	}
+	password := user.Password;
+	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(inputPassword));
+	if err != nil {
+		return err;
+	}
+	return nil;
 }
 
 func GetUserFromToken(tokenString string) (jwt.MapClaims, error) {

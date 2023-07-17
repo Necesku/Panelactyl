@@ -26,5 +26,8 @@ node_modules/
 # Optional npm cache directory
 .npm
 
-# dotenv environment variables file
+# Dotenv environment variables file
 .env
+
+# Database files
+*.db
