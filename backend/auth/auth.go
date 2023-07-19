@@ -45,6 +45,14 @@ func Login(user string, inputPassword string) (error, string) {
 	return nil, token;
 }
 
+func Register(username string, password string) (error) {
+	err := database.CreateUser(username, Hash(password));
+	if err != nil {
+		return err;
+	}
+	return nil;
+}
+
 func Hash(pass string) string {
 	hashed, _ := bcrypt.GenerateFromPassword([]byte(pass), 8); return string(hashed);
 }
