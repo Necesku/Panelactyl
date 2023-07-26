@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@550&display=swap');
+@import url("./colors.css");
 
 html, body {
     margin: 0;
     padding: 0;
-    background-color: #2b2e39;
-    color: rgba(255, 255, 255, 0.85);
-    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
 }
 
 .p-title {
@@ -14,10 +15,10 @@ html, body {
 
 .p-undertitle {
     margin-top: 0;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .panel {
     margin-top: 50px;
     margin-left: 275px;
-    color: rgba(255, 255, 255, 0.5);
 }

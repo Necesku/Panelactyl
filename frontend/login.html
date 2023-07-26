@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/sidebar.css">
-    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="./assets/css/toasts.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/sidebar.css">
+    <link rel="stylesheet" href="./assets/css/navbar.css">
+    <link rel="stylesheet" href="./assets/css/form.css">
+    <link rel="stylesheet" href="./assets/css/buttons.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/3200b755f3.js" crossorigin="anonymous"></script>
+    <script src="./config.js"></script>
+    <script src="./assets/js/toasts.js"></script>
     <title>Panelactyl</title>
 </head>
 <body>
@@ -24,11 +29,32 @@
         <div class="page-title">
             <p class="p-title">Authorize</p>
             <p class="p-undertitle">Login/Register</p>
-            <div class="form">
-                <button>Login</button>
-                <button>Register</button>
-            </div>
+        </div>
+        <div class="form" style="width: fit-content">
+            <label style="margin-bottom: 0;">Username</label>
+            <input id="username">
+            <div style="margin-top: 25px"></div>
+            <label style="margin-bottom: 0;">Password</label>
+            <input type="password" id="password">
+            <br>
+            <button onclick="login()">Login</button>
+            <button onclick="register()" style="margin-bottom: 0;">Register</button>
         </div>
     </div>
+    <script>
+        function register() {
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            fetch(config.api_endpoint + "/user/auth/register", {
+                method: "POST"
+            }).then(res => res.json()).then(data => {
+                if (data.error) {
+                    createToast("error", "Error!", data.message);
+                } else {
+                    createToast("success", "Success!", data.message);
+                }
+            });
+        }
+    </script>
 </body>
 </html>

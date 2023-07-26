@@ -1,0 +1,22 @@
+@import url("colors.css");
+
+button {
+    border-radius: 32px;
+    border: none;
+    background-color: var(--primary-color);
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    font-family: var(--font-family);
+    color: white;
+    font-size: 20px;
+}
+
+button:hover {
+    background-color: var(--primary-hover-color);
+    cursor: pointer;
+}
+
+button:active {
+    background-color: var(--primary-active-color);
+}
