@@ -1,27 +1,22 @@
 .toast {
     color: black;
+    position: fixed;
+    bottom: 0;
+    right: 0;
     margin: 20px;
     padding: 10px;
     background-color: white;
     border-radius: 13px;
     display: flex;
-    width: fit-content;
-    transition: all 0.5s;
-}
-
-.toasts {
-    position: absolute;
-    overflow: none;
-    bottom: 0;
-    right: 0;
 }
 
 .slide-in {
-    right: 0;
+    animation: slide-in 0.5s;
 }
 
 .slide-out {
     right: -500px;
+    animation: slide-out 0.3s;
 }
 
 .toast .icon {

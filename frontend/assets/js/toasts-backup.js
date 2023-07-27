@@ -30,20 +30,14 @@ const types = {
 }
 
 const timeout = 5000;
+
+let totalHeight = 0;
 let counter = 0;
 
-function moderateContainer() {
-    const container = document.querySelector(".toasts");
-    if (!container) {
-        const container = document.createElement("div");
-        container.classList.add("toasts");
-        document.body.appendChild(container);
-    }
-}
-
-function delToast(el, elID) {
+function delToast(el, elID, clientHeight) {
     document.getElementById(elID).classList.add("slide-out");
     setTimeout(() => {
+        totalHeight = totalHeight - clientHeight - 4; 
         if (el.timeoutId) clearTimeout(el.timeoutId);
         el.remove();
     }, 400);
@@ -54,12 +48,14 @@ function createToast(id, title, description) {
     if (type) {
         counter++;
         let elID = `toast-${counter}`;
-        moderateContainer();
-        const el = document.querySelector(".toasts");
+        const el = document.createElement("li");
         const toastHtml = `<div class="toast slide-in" id="${elID}"><span class="${type.icon.class}" style="color: ${type.icon.color}">${type.icon.text}</span><div class="toast-content"><span class="title">${title}</span><p class="description">${description}</p></div></div>`
-        el.innerHTML += toastHtml;
+        el.innerHTML = toastHtml;
+        el.style.listStyle = "none";
         document.body.appendChild(el);
         let toastEl = document.getElementById(elID);
-        el.timeoutId = setTimeout(() => delToast(el, elID, toastEl), timeout);
+        toastEl.style.transform = `translateY(-${totalHeight}px)`;
+        totalHeight = totalHeight + toastEl.clientHeight + 4;
+        el.timeoutId = setTimeout(() => delToast(el, elID, toastEl.clientHeight), timeout);
     }
 }
