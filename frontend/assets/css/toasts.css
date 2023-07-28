@@ -6,22 +6,24 @@
     border-radius: 13px;
     display: flex;
     width: fit-content;
-    transition: all 0.5s;
+    position: relative;
+    margin-left: auto;
 }
 
 .toasts {
-    position: absolute;
+    position: fixed;
     overflow: none;
     bottom: 0;
     right: 0;
 }
 
 .slide-in {
-    right: 0;
+    animation: slide-in 0.5s;
 }
 
 .slide-out {
     right: -500px;
+    animation: slide-out 0.3s;
 }
 
 .toast .icon {

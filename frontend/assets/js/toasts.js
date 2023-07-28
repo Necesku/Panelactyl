@@ -41,8 +41,9 @@ function moderateContainer() {
     }
 }
 
-function delToast(el, elID) {
-    document.getElementById(elID).classList.add("slide-out");
+function delToast(elID) {
+    const el = document.getElementById(elID)
+    el.classList.add("slide-out");
     setTimeout(() => {
         if (el.timeoutId) clearTimeout(el.timeoutId);
         el.remove();
@@ -56,10 +57,12 @@ function createToast(id, title, description) {
         let elID = `toast-${counter}`;
         moderateContainer();
         const el = document.querySelector(".toasts");
-        const toastHtml = `<div class="toast slide-in" id="${elID}"><span class="${type.icon.class}" style="color: ${type.icon.color}">${type.icon.text}</span><div class="toast-content"><span class="title">${title}</span><p class="description">${description}</p></div></div>`
-        el.innerHTML += toastHtml;
-        document.body.appendChild(el);
-        let toastEl = document.getElementById(elID);
-        el.timeoutId = setTimeout(() => delToast(el, elID, toastEl), timeout);
+        const toastContentHtml = `<span class="${type.icon.class}" style="color: ${type.icon.color}">${type.icon.text}</span><div class="toast-content"><span class="title">${title}</span><p class="description">${description}</p></div>`
+        const toastEl = document.createElement("div");
+        toastEl.classList.add("toast", "slide-in");
+        toastEl.id = elID;
+        toastEl.innerHTML = toastContentHtml;
+        el.appendChild(toastEl);
+        toastEl.timeoutId = setTimeout(() => delToast(elID), timeout);
     }
 }

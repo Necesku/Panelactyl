@@ -10,8 +10,8 @@ import "golang.org/x/crypto/bcrypt";
 import "github.com/gofiber/fiber/v2/middleware/cors";
 
 type LoginBody struct {
-	Username string;
-	Password string;	
+	Username string `json:"username" xml:"username" form:"username"`;
+	Password string `json:"password" xml:"password" form:"password"`;	
 }
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 	app := fiber.New();
 
 	app.Use(cors.New(cors.Config{
-		AllowHeaders: "Access-Control-Allow-Origin",
+		AllowHeaders: "Access-Control-Allow-Origin, Content-Type",
 		AllowOrigins: auth.GetFromEnv("FRONTEND_URL"),
 	}));
 
@@ -51,7 +51,7 @@ func main() {
 		body := new(LoginBody);
 		err := c.BodyParser(body);
 		if err != nil {
-			return c.JSON(fiber.Map{"error": true, "message": " Wrong input! (BodyParser error)"});
+			return c.JSON(fiber.Map{"error": true, "message": "Wrong input! (BodyParser error)"});
 		}
 		err = auth.Register(body.Username, body.Password);
 		switch {
